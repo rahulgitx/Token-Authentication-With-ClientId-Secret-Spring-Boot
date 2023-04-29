@@ -54,29 +54,13 @@ public class Controller {
 
         // send the POST request to the token URL with the HTTP entity and get the access token
         ResponseEntity<String> response = restTemplate.postForEntity(tokenUrl, entity, String.class);
-        String accessToken="empty";
         if (response.getStatusCode() == HttpStatus.OK) {
-            String responseBody = response.getBody();
+            String accessToken = response.getBody();
             // process the response body to get the access token
-
-            accessToken = responseBody;
+            return accessToken;
         }
-
-        System.out.println(accessToken);
-
-        return accessToken;
-
+        return null;
     }
 
-    private static class AccessTokenResponse {
-        private String access_token;
 
-        public String getAccessToken() {
-            return access_token;
-        }
-
-        public void setAccessToken(String access_token) {
-            this.access_token = access_token;
-        }
-    }
 }
