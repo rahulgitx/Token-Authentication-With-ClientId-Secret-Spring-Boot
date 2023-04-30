@@ -1,6 +1,9 @@
 package com.example.TokenAuthentication.controllers;
 
 import com.example.TokenAuthentication.models.Credentials;
+import com.example.TokenAuthentication.models.Request;
+import com.example.TokenAuthentication.models.Response;
+import com.example.TokenAuthentication.service.AuthWithToken;
 import com.example.TokenAuthentication.service.GenerateToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -38,6 +41,13 @@ public class Controller {
         GenerateToken gen = new GenerateToken();
         return gen.generateToken(credentials, url);
 
+    }
+
+    @GetMapping("authWithToken")
+    public @ResponseBody Response authenticate(@RequestBody Request request){
+        AuthWithToken auth = new AuthWithToken();
+        String accessToken = "";
+        return auth.authenticate(request, accessToken);
     }
 
 
