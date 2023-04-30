@@ -1,14 +1,13 @@
 package com.example.TokenAuthentication.controllers;
 
+import com.example.TokenAuthentication.models.Credentials;
+import com.example.TokenAuthentication.service.GenerateToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.HttpURLConnection;
@@ -20,46 +19,25 @@ import java.util.Objects;
 @RequestMapping("/auth/")
 public class Controller {
 
+
+
     @GetMapping("testing")
     public @ResponseBody String test() {
         return"Working fine";
     }
 
-    @GetMapping("getToken")
+    @GetMapping ("getToken")
     public @ResponseBody String getToken(){
-        String clientId = "Insert_here";
-        String clientSecret = "Insert_here";
-        String tokenUrl = "insert_here";
+        Credentials credentials = new Credentials();
 
-        // creating a restTemplate instance
-        RestTemplate restTemplate = new RestTemplate();
+        credentials.setClientId("");
+        credentials.setSecret("");
+        String url = "";
 
-        // create the request body with the client ID, client secret and grant type parameters
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("clientId", clientId);
-        requestBody.put("secret", clientSecret);
+        System.out.println("Calling GenerateToken");
+        GenerateToken gen = new GenerateToken();
+        return gen.generateToken(credentials, url);
 
-        System.out.println("RequestBody created");
-
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-
-        // Create the HTTP entity with the request body and headers
-        HttpEntity<String> entity = new HttpEntity<>(requestBody.toString(), headers);
-        System.out.println(requestBody.toString());
-
-
-        // send the POST request to the token URL with the HTTP entity and get the access token
-        ResponseEntity<String> response = restTemplate.postForEntity(tokenUrl, entity, String.class);
-        if (response.getStatusCode() == HttpStatus.OK) {
-            String accessToken = response.getBody();
-            // process the response body to get the access token
-            return accessToken;
-        }
-        return null;
     }
 
 
